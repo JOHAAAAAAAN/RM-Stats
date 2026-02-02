@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liga Real Mandril</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">⚽ RM Stats</div>
+            <nav>
+                <button onclick="cargarDatos('anual')" class="nav-btn" id="btn-anual">🏆 TABLA ANUAL</button>
+                <hr>
+                <div id="menu-meses"></div>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <header>
+                <h1 id="titulo-pagina">Tabla Anual</h1>
+            </header>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rk</th>
+                            <th>Jugador</th>
+                            <th>V / D</th>
+                            <th>% Win</th>
+                            <th>Goles ⚽</th>
+                            <th id="header-racha">Racha</th>
+                            <th>PJ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-body">
+                        </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
