@@ -4,6 +4,8 @@ const dataPartidos = [
     // R = Resultado ('V' = Victoria, 'D' = Derrota)
     
     // Partidos de ejemplo de Enero
+    { mes: 1, jugador: "Isra", resultado: "D", goles: 0 },
+
     { mes: 1, jugador: "Isra", resultado: "V", goles: 0 },
     { mes: 1, jugador: "Mois", resultado: "V", goles: 0 },
     { mes: 1, jugador: "Seba", resultado: "V", goles: 0 },
@@ -35,6 +37,13 @@ const dataPartidos = [
     { mes: 2, jugador: "Isra", resultado: "V", goles: 0 },
     { mes: 2, jugador: "Mois", resultado: "V", goles: 0 },
     { mes: 2, jugador: "Seba", resultado: "V", goles: 1 },
+
+    { mes: 2, jugador: "Isra", resultado: "V", goles: 0 },
+    { mes: 2, jugador: "Isra", resultado: "V", goles: 0 },
+    { mes: 2, jugador: "Isra", resultado: "V", goles: 0 },
+    { mes: 2, jugador: "Isra", resultado: "V", goles: 0 },
+    { mes: 2, jugador: "Isra", resultado: "V", goles: 0 },
+
     
     
     // Partidos de ejemplo de Febrero"
