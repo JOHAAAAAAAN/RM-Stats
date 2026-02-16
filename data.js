@@ -45,7 +45,7 @@ const dataPartidos = [
     { mes: 2, jugador: "Mois", resultado: "D", goles: 0 },
     { mes: 2, jugador: "Seba", resultado: "D", goles: 4 },
 
-    { mes: 2, jugador: "Isra", resultado: "D", goles: 1 },
+    { mes: 2, jugador: "Isra", resultado: "D", goles: 0 },
     { mes: 2, jugador: "Mois", resultado: "D", goles: 0 },
     { mes: 2, jugador: "Seba", resultado: "D", goles: 2 },
 ];
