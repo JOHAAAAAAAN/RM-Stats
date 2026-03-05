@@ -3,6 +3,10 @@ const dataPartidos = [
     // MES 1 = ENERO, 2 = FEBRERO, etc.
     // R = Resultado ('V' = Victoria, 'D' = Derrota)
     
+    { mes: 3, jugador: "Mois", resultado: "V", goles: 3 },
+    { mes: 3, jugador: "Seba", resultado: "V", goles: 5 },
+    
+    
     { mes: 3, jugador: "Isra", resultado: "V", goles: 1 },
     { mes: 3, jugador: "Mois", resultado: "V", goles: 1 },
     { mes: 3, jugador: "Seba", resultado: "V", goles: 3 },
