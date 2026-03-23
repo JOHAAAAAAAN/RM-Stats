@@ -15,15 +15,16 @@ function renderizarMenu() {
     contenedor.innerHTML = html;
 }
 
-// 2. Calcular Racha ACTUAL (Mirando todo el historial global)
+// 2. Calcular Racha ACTUAL (Mirando todo el historial global y saltando empates)
 function calcularRachaActual(nombreJugador, todosLosPartidos) {
-    let misPartidos = todosLosPartidos.filter(p => p.jugador === nombreJugador);
+    // Filtramos los partidos del jugador, EXCLUYENDO los empates ('E') para no romper la racha
+    let misPartidos = todosLosPartidos.filter(p => p.jugador === nombreJugador && p.resultado !== 'E');
     if (misPartidos.length === 0) return "-";
 
     let ultimoResultado = misPartidos[misPartidos.length - 1].resultado;
     let contador = 0;
 
-    // Contamos hacia atrás desde el último partido jugado
+    // Contamos hacia atrás desde el último partido decisivo jugado
     for (let i = misPartidos.length - 1; i >= 0; i--) {
         if (misPartidos[i].resultado === ultimoResultado) {
             contador++;
@@ -36,9 +37,10 @@ function calcularRachaActual(nombreJugador, todosLosPartidos) {
     return icono.repeat(contador);
 }
 
-// 3. Calcular Rachas MÁXIMAS (Históricas del año)
+// 3. Calcular Rachas MÁXIMAS (Históricas del año, saltando empates)
 function calcularRachasHistoricas(nombreJugador, todosLosPartidos) {
-    let misPartidos = todosLosPartidos.filter(p => p.jugador === nombreJugador);
+    // Filtramos excluyendo empates ('E')
+    let misPartidos = todosLosPartidos.filter(p => p.jugador === nombreJugador && p.resultado !== 'E');
     if (misPartidos.length === 0) return "-";
 
     let maxVictoria = 0;
@@ -127,7 +129,7 @@ function cargarDatos(filtro) {
         }
     }
 
-    // Filtrar partidos para las estadísticas numéricas (Goles, V/D, etc)
+    // Filtrar partidos para las estadísticas numéricas (Goles, V/E/D, etc)
     let partidosFiltrados = dataPartidos;
     if (filtro !== 'anual') {
         partidosFiltrados = dataPartidos.filter(p => p.mes === filtro);
@@ -139,23 +141,21 @@ function cargarDatos(filtro) {
         let misPartidosFiltrados = partidosFiltrados.filter(p => p.jugador === nombre);
         
         let victorias = misPartidosFiltrados.filter(p => p.resultado === 'V').length;
+        let empates = misPartidosFiltrados.filter(p => p.resultado === 'E').length; // Se añaden los empates
         let derrotas = misPartidosFiltrados.filter(p => p.resultado === 'D').length;
         let goles = misPartidosFiltrados.reduce((acc, curr) => acc + curr.goles, 0);
-        let jugados = victorias + derrotas;
-        let winRate = jugados > 0 ? Math.round((victorias / jugados) * 100) : 0;
+        let jugados = victorias + empates + derrotas; // El total ahora incluye los empates
+        let winRate = jugados > 0 ? Math.round((victorias / jugados) * 100) : 0; // % sobre el total real
         
         // CÁLCULO DE RACHA (Diferenciado)
         let rachaDisplay = "";
         if (filtro === 'anual') {
-            // En anual: Calculamos máximos históricos usando TODOS los datos
             rachaDisplay = calcularRachasHistoricas(nombre, dataPartidos);
         } else if (filtro === mesActualReal) {
-            // En mes actual: Calculamos racha actual usando TODOS los datos (para que no se corte)
             rachaDisplay = calcularRachaActual(nombre, dataPartidos);
         }
-        // Si es mes pasado, rachaDisplay queda vacío
 
-        return { nombre, victorias, derrotas, goles, jugados, winRate, rachaDisplay };
+        return { nombre, victorias, empates, derrotas, goles, jugados, winRate, rachaDisplay };
     });
 
     // Ordenar: Mayor WinRate primero, desempate por Victorias
@@ -185,7 +185,7 @@ function cargarDatos(filtro) {
                     <span class="player-name">${jugador.nombre} ${index === 0 ? '👑' : ''}</span>
                 </td>
 
-                <td>${jugador.victorias} / ${jugador.derrotas}</td>
+                <td>${jugador.victorias} / ${jugador.empates} / ${jugador.derrotas}</td>
                 <td><span class="badge" style="background-color:${colorBadge}">${jugador.winRate}%</span></td>
                 <td>${jugador.goles}</td>
                 ${celdaRacha}
