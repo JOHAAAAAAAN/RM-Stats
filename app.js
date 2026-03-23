@@ -1,8 +1,7 @@
-/* app.js ACTUALIZADO Y CORREGIDO */
+/* app.js ACTUALIZADO (Sin % WIN visual) */
 
 const nombresMeses = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
-// 1. Generar menú lateral (Solo hasta el mes actual)
 function renderizarMenu() {
     const contenedor = document.getElementById("menu-meses");
     const fechaHoy = new Date();
@@ -15,7 +14,6 @@ function renderizarMenu() {
     contenedor.innerHTML = html;
 }
 
-// 2. Calcular Racha ACTUAL (Mirando todo el historial global y saltando empates)
 function calcularRachaActual(nombreJugador, todosLosPartidos) {
     let misPartidos = todosLosPartidos.filter(p => p.jugador === nombreJugador && p.resultado !== 'E');
     if (misPartidos.length === 0) return "-";
@@ -35,7 +33,6 @@ function calcularRachaActual(nombreJugador, todosLosPartidos) {
     return icono.repeat(contador);
 }
 
-// 3. Calcular Rachas MÁXIMAS (Históricas del año, saltando empates)
 function calcularRachasHistoricas(nombreJugador, todosLosPartidos) {
     let misPartidos = todosLosPartidos.filter(p => p.jugador === nombreJugador && p.resultado !== 'E');
     if (misPartidos.length === 0) return "-";
@@ -66,16 +63,14 @@ function calcularRachasHistoricas(nombreJugador, todosLosPartidos) {
     return resultado || "-";
 }
 
-// Función Auxiliar de Colores
 function getPerformanceColor(rate) {
-    if (rate > 90) return '#00e676';      // Verde (>90%)
-    if (rate >= 70) return '#2979ff';     // Azul (70-89%)
-    if (rate >= 60) return '#ffea00';     // Naranja (60-69%)
-    if (rate >= 50) return '#ff9100';     // Amarillo (50-59%)
-    return '#ff1744';                     // Rojo (<50%)
+    if (rate > 90) return '#00e676';      
+    if (rate >= 70) return '#2979ff';     
+    if (rate >= 60) return '#ffea00';     
+    if (rate >= 50) return '#ff9100';     
+    return '#ff1744';                     
 }
 
-// 4. Función Principal: Cargar Datos y Dibujar Tabla
 function cargarDatos(filtro) {
     const tbody = document.getElementById("tabla-body");
     const titulo = document.getElementById("titulo-pagina");
@@ -128,7 +123,6 @@ function cargarDatos(filtro) {
         partidosFiltrados = dataPartidos.filter(p => p.mes === filtro);
     }
 
-    // Calcular Estadísticas
     let stats = jugadores.map(nombre => {
         let misPartidosFiltrados = partidosFiltrados.filter(p => p.jugador === nombre);
         
@@ -140,9 +134,8 @@ function cargarDatos(filtro) {
         
         let winRate = jugados > 0 ? Math.round((victorias / jugados) * 100) : 0; 
         
-        // LÓGICA DE PUNTOS Y RENDIMIENTO
-        let puntos = (victorias * 3) + (empates * 1); // 3 pts por Win, 1 pt por Empate
-        let puntosMaximos = jugados * 3; // Puntos totales posibles (PJ * 3)
+        let puntos = (victorias * 3) + (empates * 1); 
+        let puntosMaximos = jugados * 3; 
         let rendRate = jugados > 0 ? Math.round((puntos / puntosMaximos) * 100) : 0; 
 
         let rachaDisplay = "";
@@ -155,12 +148,10 @@ function cargarDatos(filtro) {
         return { nombre, victorias, empates, derrotas, goles, jugados, winRate, puntos, puntosMaximos, rendRate, rachaDisplay };
     });
 
-    // ORDENAMIENTO: Primero % Rendimiento, luego Puntos, luego % Win
+    // Ordenamiento: Primero % Rendimiento, luego Puntos, luego % Win (como desempate interno)
     stats.sort((a, b) => b.rendRate - a.rendRate || b.puntos - a.puntos || b.winRate - a.winRate);
 
-    // Dibujar Filas
     stats.forEach((jugador, index) => {
-        let colorWinRate = getPerformanceColor(jugador.winRate);
         let colorRendRate = getPerformanceColor(jugador.rendRate);
         
         let celdaRacha = mostrarColumnaRacha ? `<td>${jugador.rachaDisplay}</td>` : '';
@@ -178,7 +169,6 @@ function cargarDatos(filtro) {
                 <td><span class="badge" style="background-color:${colorRendRate}">${jugador.rendRate}%</span> <span style="font-size:0.8rem; color:#888;">(${jugador.puntos} / ${jugador.puntosMaximos} pts)</span></td>
 
                 <td>${jugador.victorias} / ${jugador.empates} / ${jugador.derrotas}</td>
-                <td><span class="badge" style="background-color:${colorWinRate}">${jugador.winRate}%</span></td>
                 
                 <td>${jugador.goles}</td>
                 ${celdaRacha}
