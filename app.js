@@ -1,4 +1,4 @@
-/* app.js ACTUALIZADO CON COLORES COMPARTIDOS */
+/* app.js ACTUALIZADO */
 
 const nombresMeses = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
@@ -66,8 +66,7 @@ function calcularRachasHistoricas(nombreJugador, todosLosPartidos) {
     return resultado || "-";
 }
 
-// ** NUEVA FUNCIÓN AUXILIAR PARA OBTENER EL COLOR DE RENDIMIENTO **
-// Aplica el mismo sistema de colores a cualquier porcentaje
+// Función Auxiliar de Colores
 function getPerformanceColor(rate) {
     if (rate > 90) return '#00e676';      // Verde (>90%)
     if (rate >= 70) return '#2979ff';     // Azul (70-89%)
@@ -129,7 +128,7 @@ function cargarDatos(filtro) {
         partidosFiltrados = dataPartidos.filter(p => p.mes === filtro);
     }
 
-    // Calcular Estadísticas y NUEVO RENDIMIENTO
+    // Calcular Estadísticas
     let stats = jugadores.map(nombre => {
         let misPartidosFiltrados = partidosFiltrados.filter(p => p.jugador === nombre);
         
@@ -139,13 +138,11 @@ function cargarDatos(filtro) {
         let goles = misPartidosFiltrados.reduce((acc, curr) => acc + curr.goles, 0);
         let jugados = victorias + empates + derrotas; 
         
-        // % Win tradicional
         let winRate = jugados > 0 ? Math.round((victorias / jugados) * 100) : 0; 
         
-        // LÓGICA DE PUNTOS Y RENDIMIENTO
-        let puntos = (victorias * 3) + (empates * 1); // 3 pts por Win, 1 pt por Empate
-        let puntosMaximos = jugados * 3; // Cuántos puntos tendría si ganaba todo
-        let rendRate = jugados > 0 ? Math.round((puntos / puntosMaximos) * 100) : 0; // % Rendimiento
+        let puntos = (victorias * 3) + (empates * 1); 
+        let puntosMaximos = jugados * 3; 
+        let rendRate = jugados > 0 ? Math.round((puntos / puntosMaximos) * 100) : 0; 
 
         let rachaDisplay = "";
         if (filtro === 'anual') {
@@ -157,12 +154,11 @@ function cargarDatos(filtro) {
         return { nombre, victorias, empates, derrotas, goles, jugados, winRate, puntos, rendRate, rachaDisplay };
     });
 
-    // NUEVO ORDENAMIENTO: Primero por % Rendimiento, luego Puntos, luego % Win
+    // ORDENAMIENTO: Primero % Rendimiento, luego Puntos, luego % Win
     stats.sort((a, b) => b.rendRate - a.rendRate || b.puntos - a.puntos || b.winRate - a.winRate);
 
     // Dibujar Filas
     stats.forEach((jugador, index) => {
-        // Obtenemos los colores usando la función auxiliar compartida
         let colorWinRate = getPerformanceColor(jugador.winRate);
         let colorRendRate = getPerformanceColor(jugador.rendRate);
         
@@ -178,11 +174,10 @@ function cargarDatos(filtro) {
                     <span class="player-name">${jugador.nombre} ${index === 0 ? '👑' : ''}</span>
                 </td>
 
-                <td>${jugador.victorias} / ${jugador.empates} / ${jugador.derrotas}</td>
-                
-                <td><span class="badge" style="background-color:${colorWinRate}">${jugador.winRate}%</span></td>
-                
                 <td><span class="badge" style="background-color:${colorRendRate}">${jugador.rendRate}%</span> <span style="font-size:0.8rem; color:#888;">(${jugador.puntos} pts)</span></td>
+
+                <td>${jugador.victorias} / ${jugador.empates} / ${jugador.derrotas}</td>
+                <td><span class="badge" style="background-color:${colorWinRate}">${jugador.winRate}%</span></td>
                 
                 <td>${jugador.goles}</td>
                 ${celdaRacha}
@@ -196,7 +191,6 @@ function cargarDatos(filtro) {
 // INICIO AUTOMÁTICO
 renderizarMenu();
 
-// Detectar mes actual y cargar
 const fechaHoy = new Date();
 const mesActualInicial = fechaHoy.getMonth() + 1; 
 cargarDatos(mesActualInicial);
