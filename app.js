@@ -1,4 +1,4 @@
-/* app.js ACTUALIZADO */
+/* app.js ACTUALIZADO CON FORMATO DE PUNTOS (X/Y pts) */
 
 const nombresMeses = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
@@ -140,8 +140,9 @@ function cargarDatos(filtro) {
         
         let winRate = jugados > 0 ? Math.round((victorias / jugados) * 100) : 0; 
         
-        let puntos = (victorias * 3) + (empates * 1); 
-        let puntosMaximos = jugados * 3; 
+        // LÓGICA DE PUNTOS Y RENDIMIENTO
+        let puntos = (victorias * 3) + (empates * 1); // 3 pts por Win, 1 pt por Empate
+        let puntosMaximos = jugados * 3; // Puntos totales posibles (PJ * 3)
         let rendRate = jugados > 0 ? Math.round((puntos / puntosMaximos) * 100) : 0; 
 
         let rachaDisplay = "";
@@ -151,7 +152,7 @@ function cargarDatos(filtro) {
             rachaDisplay = calcularRachaActual(nombre, dataPartidos);
         }
 
-        return { nombre, victorias, empates, derrotas, goles, jugados, winRate, puntos, rendRate, rachaDisplay };
+        return { nombre, victorias, empates, derrotas, goles, jugados, winRate, puntos, puntosMaximos, rendRate, rachaDisplay };
     });
 
     // ORDENAMIENTO: Primero % Rendimiento, luego Puntos, luego % Win
@@ -171,10 +172,10 @@ function cargarDatos(filtro) {
                 
                 <td class="player-cell">
                     <img src="${fotoPerfil}" class="avatar" alt="foto">
-                    <span class="player-name">${jugador.nombre} ${index === 0 ? '👑' : ''}</span>
+                    <span class="player-name">${jugador.nombre} ${index === 0 ? '👑}</span>
                 </td>
 
-                <td><span class="badge" style="background-color:${colorRendRate}">${jugador.rendRate}%</span> <span style="font-size:0.8rem; color:#888;">(${jugador.puntos} pts)</span></td>
+                <td><span class="badge" style="background-color:${colorRendRate}">${jugador.rendRate}%</span> <span style="font-size:0.8rem; color:#888;">(${jugador.puntos} / ${jugador.puntosMaximos} pts)</span></td>
 
                 <td>${jugador.victorias} / ${jugador.empates} / ${jugador.derrotas}</td>
                 <td><span class="badge" style="background-color:${colorWinRate}">${jugador.winRate}%</span></td>
