@@ -1,4 +1,4 @@
-/* app.js ACTUALIZADO CON FORMATO DE PUNTOS (X/Y pts) */
+/* app.js ACTUALIZADO Y CORREGIDO */
 
 const nombresMeses = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
@@ -172,7 +172,7 @@ function cargarDatos(filtro) {
                 
                 <td class="player-cell">
                     <img src="${fotoPerfil}" class="avatar" alt="foto">
-                    <span class="player-name">${jugador.nombre} ${index === 0 ? '👑}</span>
+                    <span class="player-name">${jugador.nombre} ${index === 0 ? '👑' : ''}</span>
                 </td>
 
                 <td><span class="badge" style="background-color:${colorRendRate}">${jugador.rendRate}%</span> <span style="font-size:0.8rem; color:#888;">(${jugador.puntos} / ${jugador.puntosMaximos} pts)</span></td>
