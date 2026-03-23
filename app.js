@@ -1,4 +1,4 @@
-/* app.js ACTUALIZADO */
+/* app.js ACTUALIZADO CON COLORES COMPARTIDOS */
 
 const nombresMeses = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
@@ -64,6 +64,16 @@ function calcularRachasHistoricas(nombreJugador, todosLosPartidos) {
     if (maxDerrota > 0) resultado += "❄️".repeat(maxDerrota);
 
     return resultado || "-";
+}
+
+// ** NUEVA FUNCIÓN AUXILIAR PARA OBTENER EL COLOR DE RENDIMIENTO **
+// Aplica el mismo sistema de colores a cualquier porcentaje
+function getPerformanceColor(rate) {
+    if (rate > 90) return '#00e676';      // Verde (>90%)
+    if (rate >= 70) return '#2979ff';     // Azul (70-89%)
+    if (rate >= 60) return '#ffea00';     // Naranja (60-69%)
+    if (rate >= 50) return '#ff9100';     // Amarillo (50-59%)
+    return '#ff1744';                     // Rojo (<50%)
 }
 
 // 4. Función Principal: Cargar Datos y Dibujar Tabla
@@ -152,13 +162,9 @@ function cargarDatos(filtro) {
 
     // Dibujar Filas
     stats.forEach((jugador, index) => {
-        // Colores para el WIN RATE (Mantenemos tu lógica anterior para el badge visual)
-        let colorBadge;
-        if (jugador.winRate > 90) colorBadge = '#00e676';      
-        else if (jugador.winRate >= 70) colorBadge = '#2979ff'; 
-        else if (jugador.winRate >= 60) colorBadge = '#ffea00'; 
-        else if (jugador.winRate >= 50) colorBadge = '#ff9100'; 
-        else colorBadge = '#ff1744';                            
+        // Obtenemos los colores usando la función auxiliar compartida
+        let colorWinRate = getPerformanceColor(jugador.winRate);
+        let colorRendRate = getPerformanceColor(jugador.rendRate);
         
         let celdaRacha = mostrarColumnaRacha ? `<td>${jugador.rachaDisplay}</td>` : '';
         let fotoPerfil = fotos[jugador.nombre] || "https://via.placeholder.com/35";
@@ -173,9 +179,10 @@ function cargarDatos(filtro) {
                 </td>
 
                 <td>${jugador.victorias} / ${jugador.empates} / ${jugador.derrotas}</td>
-                <td><span class="badge" style="background-color:${colorBadge}">${jugador.winRate}%</span></td>
                 
-                <td><strong>${jugador.rendRate}%</strong> <span style="font-size:0.8rem; color:#888;">(${jugador.puntos} pts)</span></td>
+                <td><span class="badge" style="background-color:${colorWinRate}">${jugador.winRate}%</span></td>
+                
+                <td><span class="badge" style="background-color:${colorRendRate}">${jugador.rendRate}%</span> <span style="font-size:0.8rem; color:#888;">(${jugador.puntos} pts)</span></td>
                 
                 <td>${jugador.goles}</td>
                 ${celdaRacha}
