@@ -109,16 +109,14 @@ th {
 }
 
 /* --- ESTILOS DE JUGADOR (FOTO + NOMBRE) --- */
-/* La celda completa */
 .player-cell {
     display: flex;
     align-items: center;
-    gap: 12px; /* Espacio entre foto y nombre */
+    gap: 12px;
     text-align: left;
     min-width: 150px;
 }
 
-/* La foto redonda */
 .avatar {
     width: 35px;
     height: 35px;

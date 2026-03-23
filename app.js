@@ -17,14 +17,12 @@ function renderizarMenu() {
 
 // 2. Calcular Racha ACTUAL (Mirando todo el historial global y saltando empates)
 function calcularRachaActual(nombreJugador, todosLosPartidos) {
-    // Filtramos los partidos del jugador, EXCLUYENDO los empates ('E') para no romper la racha
     let misPartidos = todosLosPartidos.filter(p => p.jugador === nombreJugador && p.resultado !== 'E');
     if (misPartidos.length === 0) return "-";
 
     let ultimoResultado = misPartidos[misPartidos.length - 1].resultado;
     let contador = 0;
 
-    // Contamos hacia atrás desde el último partido decisivo jugado
     for (let i = misPartidos.length - 1; i >= 0; i--) {
         if (misPartidos[i].resultado === ultimoResultado) {
             contador++;
@@ -39,7 +37,6 @@ function calcularRachaActual(nombreJugador, todosLosPartidos) {
 
 // 3. Calcular Rachas MÁXIMAS (Históricas del año, saltando empates)
 function calcularRachasHistoricas(nombreJugador, todosLosPartidos) {
-    // Filtramos excluyendo empates ('E')
     let misPartidos = todosLosPartidos.filter(p => p.jugador === nombreJugador && p.resultado !== 'E');
     if (misPartidos.length === 0) return "-";
 
@@ -52,19 +49,18 @@ function calcularRachasHistoricas(nombreJugador, todosLosPartidos) {
     misPartidos.forEach(p => {
         if (p.resultado === 'V') {
             actualVictoria++;
-            actualDerrota = 0; // Se corta la racha de derrotas
+            actualDerrota = 0; 
             if (actualVictoria > maxVictoria) maxVictoria = actualVictoria;
         } else {
             actualDerrota++;
-            actualVictoria = 0; // Se corta la racha de victorias
+            actualVictoria = 0; 
             if (actualDerrota > maxDerrota) maxDerrota = actualDerrota;
         }
     });
 
-    // Construimos el string con los máximos
     let resultado = "";
     if (maxVictoria > 0) resultado += "🔥".repeat(maxVictoria);
-    if (maxVictoria > 0 && maxDerrota > 0) resultado += " <span style='color:#555'>|</span> "; // Separador visual
+    if (maxVictoria > 0 && maxDerrota > 0) resultado += " <span style='color:#555'>|</span> "; 
     if (maxDerrota > 0) resultado += "❄️".repeat(maxDerrota);
 
     return resultado || "-";
@@ -76,31 +72,24 @@ function cargarDatos(filtro) {
     const titulo = document.getElementById("titulo-pagina");
     const headerRacha = document.getElementById("header-racha");
     
-    // Obtener fecha real de hoy para comparaciones
     const fechaHoy = new Date();
     const mesActualReal = fechaHoy.getMonth() + 1; 
 
     tbody.innerHTML = "";
-    
-    // Limpiar botones activos
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
 
-    // --- DICCIONARIO DE FOTOS ---
     const fotos = {
         "Isra": "foto1.jpg",
         "Mois": "foto2.jpg",
         "Seba": "foto3.jpg"
     };
-    // ----------------------------
 
-    // Lógica de visualización de columnas y títulos
     let mostrarColumnaRacha = false;
 
     if (filtro === 'anual') {
         titulo.innerText = "🏆 Tabla Anual Global";
         document.getElementById('btn-anual').classList.add('active');
         
-        // En anual mostramos la columna pero con otro título
         if(headerRacha) {
             headerRacha.style.display = "";
             headerRacha.innerText = "Rachas Max";
@@ -110,44 +99,44 @@ function cargarDatos(filtro) {
     } else {
         titulo.innerText = "📅 Estadísticas de " + nombresMeses[filtro];
         
-        // Activar botón del mes correspondiente
         let botones = document.querySelectorAll('#menu-meses button');
         if(botones[filtro - 1]) botones[filtro - 1].classList.add('active');
 
-        // Lógica de Racha en Meses
         if (filtro === mesActualReal) {
-            // Si es el mes presente, mostramos racha actual
             if(headerRacha) {
                 headerRacha.style.display = "";
                 headerRacha.innerText = "Racha Actual";
             }
             mostrarColumnaRacha = true;
         } else {
-            // Si es un mes pasado, ocultamos la columna
             if(headerRacha) headerRacha.style.display = "none";
             mostrarColumnaRacha = false;
         }
     }
 
-    // Filtrar partidos para las estadísticas numéricas (Goles, V/E/D, etc)
     let partidosFiltrados = dataPartidos;
     if (filtro !== 'anual') {
         partidosFiltrados = dataPartidos.filter(p => p.mes === filtro);
     }
 
-    // Calcular Estadísticas
+    // Calcular Estadísticas y NUEVO RENDIMIENTO
     let stats = jugadores.map(nombre => {
-        // Datos filtrados (para sumar goles y victorias del mes/año seleccionado)
         let misPartidosFiltrados = partidosFiltrados.filter(p => p.jugador === nombre);
         
         let victorias = misPartidosFiltrados.filter(p => p.resultado === 'V').length;
-        let empates = misPartidosFiltrados.filter(p => p.resultado === 'E').length; // Se añaden los empates
+        let empates = misPartidosFiltrados.filter(p => p.resultado === 'E').length; 
         let derrotas = misPartidosFiltrados.filter(p => p.resultado === 'D').length;
         let goles = misPartidosFiltrados.reduce((acc, curr) => acc + curr.goles, 0);
-        let jugados = victorias + empates + derrotas; // El total ahora incluye los empates
-        let winRate = jugados > 0 ? Math.round((victorias / jugados) * 100) : 0; // % sobre el total real
+        let jugados = victorias + empates + derrotas; 
         
-        // CÁLCULO DE RACHA (Diferenciado)
+        // % Win tradicional
+        let winRate = jugados > 0 ? Math.round((victorias / jugados) * 100) : 0; 
+        
+        // LÓGICA DE PUNTOS Y RENDIMIENTO
+        let puntos = (victorias * 3) + (empates * 1); // 3 pts por Win, 1 pt por Empate
+        let puntosMaximos = jugados * 3; // Cuántos puntos tendría si ganaba todo
+        let rendRate = jugados > 0 ? Math.round((puntos / puntosMaximos) * 100) : 0; // % Rendimiento
+
         let rachaDisplay = "";
         if (filtro === 'anual') {
             rachaDisplay = calcularRachasHistoricas(nombre, dataPartidos);
@@ -155,15 +144,15 @@ function cargarDatos(filtro) {
             rachaDisplay = calcularRachaActual(nombre, dataPartidos);
         }
 
-        return { nombre, victorias, empates, derrotas, goles, jugados, winRate, rachaDisplay };
+        return { nombre, victorias, empates, derrotas, goles, jugados, winRate, puntos, rendRate, rachaDisplay };
     });
 
-    // Ordenar: Mayor WinRate primero, desempate por Victorias
-    stats.sort((a, b) => b.winRate - a.winRate || b.victorias - a.victorias);
+    // NUEVO ORDENAMIENTO: Primero por % Rendimiento, luego Puntos, luego % Win
+    stats.sort((a, b) => b.rendRate - a.rendRate || b.puntos - a.puntos || b.winRate - a.winRate);
 
     // Dibujar Filas
     stats.forEach((jugador, index) => {
-        // Lógica de Colores
+        // Colores para el WIN RATE (Mantenemos tu lógica anterior para el badge visual)
         let colorBadge;
         if (jugador.winRate > 90) colorBadge = '#00e676';      
         else if (jugador.winRate >= 70) colorBadge = '#2979ff'; 
@@ -171,9 +160,7 @@ function cargarDatos(filtro) {
         else if (jugador.winRate >= 50) colorBadge = '#ff9100'; 
         else colorBadge = '#ff1744';                            
         
-        // Celda Racha (Solo si decidimos mostrarla arriba)
         let celdaRacha = mostrarColumnaRacha ? `<td>${jugador.rachaDisplay}</td>` : '';
-        
         let fotoPerfil = fotos[jugador.nombre] || "https://via.placeholder.com/35";
 
         let fila = `
@@ -187,6 +174,9 @@ function cargarDatos(filtro) {
 
                 <td>${jugador.victorias} / ${jugador.empates} / ${jugador.derrotas}</td>
                 <td><span class="badge" style="background-color:${colorBadge}">${jugador.winRate}%</span></td>
+                
+                <td><strong>${jugador.rendRate}%</strong> <span style="font-size:0.8rem; color:#888;">(${jugador.puntos} pts)</span></td>
+                
                 <td>${jugador.goles}</td>
                 ${celdaRacha}
                 <td>${jugador.jugados}</td>
