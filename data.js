@@ -133,6 +133,19 @@ const dataPartidos = [
     { mes: 4, jugador: "Isra", resultado: "D", goles: 0 },
     { mes: 4, jugador: "Mois", resultado: "V", goles: 4 },
     { mes: 4, jugador: "Seba", resultado: "D", goles: 3 },
+
+    { mes: 4, jugador: "Isra", resultado: "E", goles: 1 },
+    { mes: 4, jugador: "Mois", resultado: "E", goles: 2 },
+    { mes: 4, jugador: "Seba", resultado: "E", goles: 3 },
+
+    { mes: 4, jugador: "Isra", resultado: "D", goles: 1 },
+    { mes: 4, jugador: "Mois", resultado: "V", goles: 2 },
+    { mes: 4, jugador: "Seba", resultado: "D", goles: 3 },
+
+    // Partidos de Mayo   
+    { mes: 5, jugador: "Isra", resultado: "E", goles: 1 },
+    { mes: 5, jugador: "Mois", resultado: "E", goles: 2 },
+    { mes: 5, jugador: "Seba", resultado: "E", goles: 3 },
     
 ];
 
