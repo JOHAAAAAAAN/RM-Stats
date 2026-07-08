@@ -168,6 +168,11 @@ const dataPartidos = [
     { mes: 6, jugador: "Mois", resultado: "V", goles: 3 },
     { mes: 6, jugador: "Seba", resultado: "D", goles: 3 },
 
+    // Partidos de Julio  
+    { mes: 7, jugador: "Isra", resultado: "V", goles: 0 },
+    { mes: 7, jugador: "Mois", resultado: "D", goles: 0 },
+    { mes: 7, jugador: "Seba", resultado: "D", goles: 1 },
+
 
     
 ];
