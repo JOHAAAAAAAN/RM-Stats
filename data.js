@@ -181,6 +181,15 @@ const dataPartidos = [
     { mes: 7, jugador: "Mois", resultado: "V", goles: 0 },
     { mes: 7, jugador: "Seba", resultado: "D", goles: 0 },
 
+    { mes: 7, jugador: "Isra", resultado: "D", goles: 0 },
+    { mes: 7, jugador: "Mois", resultado: "V", goles: 1 },
+
+    // Partidos de Agosto  
+    { mes: 8, jugador: "Isra", resultado: "V", goles: 0 },
+    { mes: 8, jugador: "Mois", resultado: "V", goles: 0 },
+    { mes: 8, jugador: "Seba", resultado: "V", goles: 3 },
+
+
 
     
 ];
