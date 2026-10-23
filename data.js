@@ -254,6 +254,9 @@ const dataPartidos = [
     { mes: 10, jugador: "Mois", resultado: "V", goles: 0 },
     { mes: 10, jugador: "Seba", resultado: "V", goles: 0 },
     
+    { mes: 10, jugador: "Isra", resultado: "V", goles: 0 },
+    { mes: 10, jugador: "Mois", resultado: "D", goles: 3 },
+    { mes: 10, jugador: "Seba", resultado: "V", goles: 0 },
 ];
 
 const jugadores = ["Isra", "Mois", "Seba"]; // Tus amigos
